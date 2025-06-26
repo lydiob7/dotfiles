@@ -1,0 +1,26 @@
+{
+  "React Component with types": {
+    "prefix": "rafce",
+    "body": [
+      "import type { ComponentProps, FC } from 'react';",
+      "import { cn } from 'utils/cn'",
+      "",
+      "interface ${1:NewComponent}Props extends ComponentProps<'div'> {",
+      "",
+      "}",
+      "",
+      "const ${1:NewComponent}: FC<${1:NewComponent}Props> = ({ className }) => {",
+      "  return (",
+      "    <div className={cn('', className)}>${1:NewComponent}</div>",
+      "  );",
+      "}",
+      "",
+      "export default ${1:NewComponent}"
+    ]
+  },
+  "Log variable in console": {
+    "prefix": "clog",
+    "body": ["console.log('${1:variable} >>>>>>', ${1:variable})"],
+    "description": "Log variable in console"
+  }
+}
