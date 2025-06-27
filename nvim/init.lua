@@ -407,6 +407,16 @@ require('lazy').setup({
       vim.g.VM_default_mappings = 1
     end,
   },
+
+  -- Surround plugin
+  {
+    'kylechui/nvim-surround',
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup()
+    end,
+  },
+
   -- LSP Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
