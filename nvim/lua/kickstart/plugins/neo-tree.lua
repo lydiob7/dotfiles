@@ -14,7 +14,10 @@ return {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   opts = {
+    open_on_setup = false,
+    open_on_setup_file = false,
     filesystem = {
+      hijack_netrw_behavior = 'disabled',
       filtered_items = {
         visible = true, -- Show all files, even dotfiles
         hide_dotfiles = false,
