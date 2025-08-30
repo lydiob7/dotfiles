@@ -368,6 +368,7 @@ require('lazy').setup({
       end, { desc = '[S]earch all [F]iles (w/ Git fallback, hidden included)' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep (project)' })
       vim.keymap.set('n', '<C-f>', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
@@ -631,7 +632,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -1070,3 +1071,6 @@ vim.o.foldenable = true -- enable folding
 
 vim.keymap.set('n', '-', '<cmd>foldclose<CR>', { desc = 'Close code fold' })
 vim.keymap.set('n', '+', '<cmd>foldopen<CR>', { desc = 'Close code fold' })
+
+-- Toggle to previous buffer
+vim.keymap.set('n', '<S-Tab>', '<C-^>', { noremap = true, silent = true, desc = 'Switch to previously opened buffer' })
