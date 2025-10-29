@@ -787,6 +787,64 @@ require('lazy').setup({
     },
   },
 
+  -- Copilot configuration
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   cmd = 'Copilot',
+  --   event = 'InsertEnter',
+  --   config = function()
+  --     require('copilot').setup {
+  --       panel = {
+  --         enabled = true,
+  --         auto_refresh = false,
+  --         keymap = {
+  --           jump_prev = '[[',
+  --           jump_next = ']]',
+  --           accept = '<CR>',
+  --           refresh = 'gr',
+  --           open = '<M-CR>',
+  --         },
+  --         layout = {
+  --           position = 'bottom',
+  --           ratio = 0.4,
+  --         },
+  --       },
+  --       suggestion = {
+  --         enabled = true,
+  --         auto_trigger = true,
+  --         debounce = 75,
+  --         keymap = {
+  --           accept = '<M-l>',
+  --           accept_word = false,
+  --           accept_line = false,
+  --           next = '<M-]>',
+  --           prev = '<M-[>',
+  --           dismiss = '<C-]>',
+  --         },
+  --       },
+  --       filetypes = {
+  --         yaml = false,
+  --         markdown = false,
+  --         help = false,
+  --         gitcommit = false,
+  --         gitrebase = false,
+  --         hgcommit = false,
+  --         svn = false,
+  --         cvs = false,
+  --         ['.'] = false,
+  --       },
+  --       copilot_node_command = 'node', -- Node.js version must be > 18.x
+  --       server_opts_overrides = {},
+  --     }
+  --   end,
+  -- },
+
+  -- Blink-cmp-copilot for integration
+  -- {
+  --   'giuxtaposition/blink-cmp-copilot',
+  --   dependencies = { 'zbirenbaum/copilot.lua' },
+  -- },
+
   { -- Autocompletion
     'saghen/blink.cmp',
     event = 'VimEnter',
@@ -831,6 +889,7 @@ require('lazy').setup({
         end,
       },
       'folke/lazydev.nvim',
+      -- 'giuxtaposition/blink-cmp-copilot',
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -879,6 +938,12 @@ require('lazy').setup({
         default = { 'lsp', 'path', 'snippets', 'lazydev' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          -- copilot = {
+          --   module = 'blink-cmp-copilot',
+          --   name = 'copilot',
+          --   score_offset = 100, -- Higher priority
+          --   async = true,
+          -- },
         },
       },
 
@@ -1009,6 +1074,118 @@ require('lazy').setup({
     'numToStr/Comment.nvim',
     opts = {
       -- add any options here
+    },
+  },
+
+  -- Avante AI chat
+  {
+    'yetone/avante.nvim',
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- ⚠️ must add this setting! ! !
+    build = vim.fn.has 'win32' ~= 0 and 'powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false' or 'make',
+    event = 'VeryLazy',
+    version = false, -- Never set this value to "*"! Never!
+    ---@module 'avante'
+    ---@type avante.Config
+    opts = {
+      -- add any opts here
+      -- this file can contain specific instructions for your project
+      instructions_file = 'avante.md',
+      -- for example
+      provider = 'claude',
+      providers = {
+        claude = {
+          endpoint = 'https://api.anthropic.com',
+          model = 'claude-3-7-sonnet-20250219',
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 20480,
+          },
+        },
+        claude_haiku = {
+          endpoint = 'https://api.anthropic.com',
+          model = 'claude-3-5-haiku-20241022',
+          timeout = 30000,
+          extra_request_body = {
+            temperature = 0.1, -- Lower temperature for more consistent completions
+            max_tokens = 1024, -- Fewer tokens for quick suggestions
+          },
+        },
+        moonshot = {
+          endpoint = 'https://api.moonshot.ai/v1',
+          model = 'kimi-k2-0711-preview',
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 32768,
+          },
+        },
+      },
+      mappings = {
+        ask = '<leader>aa',
+        edit = '<leader>ae',
+        refresh = '<leader>ar',
+        diff = {
+          next = ']c',
+          prev = '[c',
+        },
+        suggestion = {
+          accept = '<M-l>',
+          next = '<M-]>',
+          prev = '<M-[>',
+          dismiss = '<C-]>',
+        },
+      },
+      hints = { enabled = true },
+      windows = {
+        wrap = true,
+        width = 30,
+      },
+      inline_suggestions = {
+        enabled = true,
+      },
+      auto_suggestions = {
+        provider = 'claude_haiku',
+      },
+    },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      --- The below dependencies are optional,
+      'echasnovski/mini.pick', -- for file_selector provider mini.pick
+      'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
+      'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+      'ibhagwan/fzf-lua', -- for file_selector provider fzf
+      'stevearc/dressing.nvim', -- for input provider dressing
+      'folke/snacks.nvim', -- for input provider snacks
+      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+      -- 'zbirenbaum/copilot.lua', -- for providers='copilot'
+      {
+        -- support for image pasting
+        'HakonHarnes/img-clip.nvim',
+        event = 'VeryLazy',
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { 'markdown', 'Avante' },
+        },
+        ft = { 'markdown', 'Avante' },
+      },
     },
   },
 

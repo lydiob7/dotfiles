@@ -1,9 +1,8 @@
 local ls = require 'luasnip'
 local s = ls.snippet
-local t = ls.text_node
 local i = ls.insert_node
+local f = ls.function_node
 local fmt = require('luasnip.extras.fmt').fmt
-local rep = require('luasnip.extras').rep
 
 return {
   s(
@@ -14,7 +13,6 @@ import type {{ ComponentProps, FC }} from 'react';
 import {{ cn }} from 'utils/cn'
 
 interface {}Props extends ComponentProps<'div'> {{
-
 }}
 
 const {}: FC<{}Props> = ({{ className }}) => {{
@@ -26,11 +24,19 @@ const {}: FC<{}Props> = ({{ className }}) => {{
 export default {}
   ]],
       {
-        i(1, 'NewComponent'), -- name
-        rep(1), -- name again
-        rep(1), -- name again
-        rep(1), -- content
-        rep(1), -- export
+        f(function()
+          return vim.fn.expand '%:t:r'
+        end),
+        f(function()
+          return vim.fn.expand '%:t:r'
+        end),
+        f(function()
+          return vim.fn.expand '%:t:r'
+        end),
+        i(1), -- content
+        f(function()
+          return vim.fn.expand '%:t:r'
+        end),
       }
     )
   ),

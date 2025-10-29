@@ -4,6 +4,8 @@ filezilla/
 configstore/
 tmux/plugins/
 tmuxinator/
+secrets/
+github-copilot/
 
 raycast/
 
