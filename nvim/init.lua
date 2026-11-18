@@ -1149,6 +1149,33 @@ require('lazy').setup({
     },
   },
 
+  -- Floating terminal
+  {
+    'folke/snacks.nvim',
+    opts = {
+      terminal = {
+        win = {
+          position = 'float',
+          width = 0.8,
+          height = 0.8,
+          border = 'rounded',
+          title = ' Terminal ',
+          title_pos = 'center',
+        },
+      },
+    },
+    keys = {
+      {
+        '<C-`>',
+        function()
+          Snacks.terminal.toggle()
+        end,
+        mode = { 'n', 't' },
+        desc = 'Toggle floating terminal',
+      },
+    },
+  },
+
   -- Avante AI chat
   {
     'yetone/avante.nvim',
